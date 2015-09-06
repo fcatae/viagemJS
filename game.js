@@ -1,5 +1,6 @@
 /* global canvas */
 /// <reference path="babylon.2.1.debug.js" />
+/// <reference path="baby.js" />
 
 var engine = new BABYLON.Engine(canvas);
 
@@ -55,3 +56,10 @@ function createScene() {
 	
 	return scene;
 }
+
+window.addEventListener('keydown', function(evt) {
+	console.log('keydown: ' + evt.keyCode);
+});
+
+var s = new Shadow();
+s.hello();

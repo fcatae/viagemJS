@@ -1,0 +1,10 @@
+{
+  "name": "viagemJS",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "devDependencies": {
+    "gulp": "^3.9.0",
+    "gulp-typescript": "^2.8.2"
+  }
+}
