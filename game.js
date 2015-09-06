@@ -73,7 +73,10 @@ engine.runRenderLoop(function() {
 		
 		if( direction.lengthSquared() > 1) {
 			direction = direction.normalize();
+		} else {
+			// chegou!	
 		}
+		
 		var velocity = .1;
 		
 		player.translate( direction, velocity );
