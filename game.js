@@ -1,17 +1,5 @@
 /* global canvas */
 /// <reference path="babylon.2.1.d.ts" />
-var canvas; // = <HTMLCanvasElement>document.querySelector('canvas');
-var engine; // = new BABYLON.Engine(canvas, true);
-var scene; // = createScene();
-function baby_init() {
-    canvas = document.querySelector('canvas');
-    engine = new BABYLON.Engine(canvas, true);
-    scene = new BABYLON.Scene(engine);
-    createSceneObjects(scene);
-}
-//var player;
-//var target_position;
-//var target = { position: null };
 function createSceneObjects(scene) {
     var sphere = BABYLON.Mesh.CreateSphere('sphere', 32, 2, scene);
     var sph_mat = new BABYLON.StandardMaterial('sph-mat', scene);
@@ -32,30 +20,22 @@ function createSceneObjects(scene) {
     ground.material = new BABYLON.StandardMaterial('ground_mat', scene);
     ground.material.wireframe = true;
     InputManager.init(camera, scene, player);
-    scene.player = player;
+    //scene.player = player;
+    scene.update = player_update;
     return scene;
-}
-document.addEventListener('DOMContentLoaded', function () {
-    baby_init();
-    engine.runRenderLoop(gameloop);
-});
-function gameloop() {
-    scene.render();
-    scene.player.update(scene.player);
-}
-;
-function player_update(player) {
-    var target_position = player.trail_position;
-    if (target_position) {
-        var dx = target_position.x - player.position.x;
-        var dz = target_position.z - player.position.z;
-        var direction = new BABYLON.Vector3(dx, 0, dz);
-        if (direction.lengthSquared() > 1) {
-            direction = direction.normalize();
+    function player_update() {
+        var target_position = player.trail_position;
+        if (target_position) {
+            var dx = target_position.x - player.position.x;
+            var dz = target_position.z - player.position.z;
+            var direction = new BABYLON.Vector3(dx, 0, dz);
+            if (direction.lengthSquared() > 1) {
+                direction = direction.normalize();
+            }
+            else {
+            }
+            var velocity = .1;
+            player.translate(direction, velocity);
         }
-        else {
-        }
-        var velocity = .1;
-        player.translate(direction, velocity);
     }
 }

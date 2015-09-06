@@ -1,19 +1,5 @@
 /* global canvas */
 /// <reference path="babylon.2.1.d.ts" />
-var canvas; // = <HTMLCanvasElement>document.querySelector('canvas');
-var engine;// = new BABYLON.Engine(canvas, true);
-var scene; // = createScene();
-
-function baby_init() {
-	canvas = <HTMLCanvasElement>document.querySelector('canvas');
-	engine = new BABYLON.Engine(canvas, true);
-	scene = new BABYLON.Scene(engine);
-	createSceneObjects(scene);
-}
-
-//var player;
-//var target_position;
-//var target = { position: null };
 
 function createSceneObjects(scene) {
 	
@@ -40,24 +26,12 @@ function createSceneObjects(scene) {
 	
 	InputManager.init(camera, scene, player);
 
-	scene.player = player;
+	//scene.player = player;
+	scene.update = player_update;
 	
 	return scene;
-}
-
-document.addEventListener('DOMContentLoaded', function() {
-	baby_init();
-	engine.runRenderLoop(gameloop);
-});
-
-
-function gameloop() {
-	scene.render();
-	scene.player.update(scene.player);
-
-};
-
-function player_update(player) {
+	
+	function player_update() {
 		var target_position = player.trail_position ;
 
 	if(target_position) {		
@@ -78,3 +52,8 @@ function player_update(player) {
 	}
 
 }
+}
+
+
+
+
