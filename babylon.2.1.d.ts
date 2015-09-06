@@ -311,14 +311,14 @@ interface Document {
     webkitCancelFullScreen(): void;
     mozCancelFullScreen(): void;
     msCancelFullScreen(): void;
-    //webkitIsFullScreen: boolean;
+    webkitIsFullScreen: boolean;
     mozFullScreen: boolean;
     msIsFullScreen: boolean;
     fullscreen: boolean;
     mozPointerLockElement: HTMLElement;
     msPointerLockElement: HTMLElement;
     webkitPointerLockElement: HTMLElement;
-    //pointerLockElement: HTMLElement;
+    pointerLockElement: HTMLElement;
 }
 interface HTMLCanvasElement {
     requestPointerLock(): void;
@@ -359,8 +359,8 @@ interface WebGLBuffer {
     is32Bits: boolean;
 }
 interface MouseEvent {
-    //movementX: number;
-    //movementY: number;
+    movementX: number;
+    movementY: number;
     mozMovementX: number;
     mozMovementY: number;
     webkitMovementX: number;

@@ -1,65 +1,82 @@
 /* global canvas */
-/// <reference path="babylon.2.1.debug.js" />
-/// <reference path="baby.js" />
+/// <reference path="babylon.2.1.d.ts" />
 
-var engine = new BABYLON.Engine(canvas);
+var engine = new BABYLON.Engine(canvas, true);
 
-var scene = new BABYLON.Scene(engine);
+var scene = createScene();
 
-var camera = new BABYLON.ArcRotateCamera('camera', 1, 1, 10, new BABYLON.Vector3(0,0,0), scene); 
-var light = new BABYLON.DirectionalLight('light', new BABYLON.Vector3(-1, -1, -1), scene);
-
-createScene();
-
-camera.attachControl(canvas);
-
-engine.runRenderLoop(function() {
-	scene.render();
-	scene.update();
-});
-
-function createMeteor(pos) {
-	var meteor = BABYLON.Mesh.CreateSphere('meteor', 8, 2, scene);
-	var posz = pos;
-	var velz = -.05;
-	
-	meteor.update = function() {
-		meteor.position = new BABYLON.Vector3(posz, 0, 0);
-		posz += velz;	
-	};
-	
-	return meteor;	
-}
+var player;
+var target_position;
 
 function createScene() {
-	//scene.clearColor = new BABYLON.Color3(.5, .5, 1);
+	var scene = new BABYLON.Scene(engine);
 	
-	var sphere = BABYLON.Mesh.CreateSphere('sphere', 8, 2, scene);
-	var met = createMeteor(1);
+	var sphere = BABYLON.Mesh.CreateSphere('sphere', 32, 2, scene);
+	var sph_mat = new BABYLON.StandardMaterial('sph-mat', scene);
+	sph_mat.diffuseColor = new BABYLON.Color3(1, .5, .5);
+	sphere.material = sph_mat;
+	player = sphere;
 	
-	var grid = BABYLON.Mesh.CreateGround('plane', 20, 20, 10, scene);
-	grid.material = new BABYLON.StandardMaterial('grid_material', scene);
-	grid.material.wireframe = true;
-	grid.position = new BABYLON.Vector3(0, -1, 10);
+	var camera = new BABYLON.ArcRotateCamera('camera', 0, 0, 15, new BABYLON.Vector3(0,0,0), scene);
+	var light = new BABYLON.DirectionalLight('light', new BABYLON.Vector3(-1,-1,-1), scene);
+
+	var ground = BABYLON.Mesh.CreateGround('ground', 20, 20, 20, scene);
+	ground.position.y = -1;
 	
-	var posx = 0;
-	var velx = .05;
-	scene.update = function update() {
-		sphere.position = new BABYLON.Vector3(posx, 0, 0);
-		posx += velx;
+	ground.material = new BABYLON.StandardMaterial('ground_mat', scene);
+	ground.material.wireframe = true;
+	
+	// input manager
+	window.addEventListener('keyup', function(evt) {
 		
-		if(posx > 5) { velx = -velx; }
-		if(posx < -5) { velx = -velx; }
+		switch(evt.keyCode) {
+			case 67: // C
+				camera.attachControl(canvas);
+				break;
+			case 86: // V
+				camera.detachControl(canvas);
+				break;
+			default:
+				//alert('key: ' + evt.keyCode);
+		}
+	});
+	
+	window.addEventListener('click', function(evt) {
+		var pickResult = scene.pick(scene.pointerX, scene.pointerY);
 		
-		met.update();
+		if( pickResult && pickResult.pickedPoint ) {		
+			var point = pickResult.pickedPoint;
+			
+			createTarget(point);
+		}
+	});	
+	
+	// f
+	function createTarget(point) {
+		var newObject = BABYLON.Mesh.CreateTorus('torus', .5, .2, 10, scene);
+		newObject.position = point;			
+		
+		target_position = point;
 	}
-	
+
 	return scene;
 }
 
-window.addEventListener('keydown', function(evt) {
-	console.log('keydown: ' + evt.keyCode);
-});
+engine.runRenderLoop(function() {
+	scene.render();
 
-var s = new Shadow();
-s.hello();
+	if(target_position) {		
+		var dx = target_position.x - player.position.x;
+		var dz = target_position.z - player.position.z;
+		
+		var direction = new BABYLON.Vector3(dx, 0, dz);
+		
+		if( direction.lengthSquared() > 1) {
+			direction = direction.normalize();
+		}
+		var velocity = .1;
+		
+		player.translate( direction, velocity );
+	}
+
+});

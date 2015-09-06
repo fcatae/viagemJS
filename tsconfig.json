@@ -1,9 +1,0 @@
-{
-	"compilerOptions": {
-		
-	},
-	"files": [
-		"babylon.2.1.d.ts",
-		"baby.ts"
-	]
-}
