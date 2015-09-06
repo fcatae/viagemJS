@@ -6,71 +6,22 @@ var scene; // = createScene();
 function baby_init() {
     canvas = document.querySelector('canvas');
     engine = new BABYLON.Engine(canvas, true);
-    scene = createScene();
-}
-var CShadow = (function () {
-    function CShadow(name) {
-        this._name = name;
-    }
-    CShadow.prototype.createMesh = function () {
-        var shadow = BABYLON.Mesh.CreateSphere('sphere', 32, 1.5, scene);
-        var shadow_mat = new BABYLON.StandardMaterial('sph-mat', scene);
-        shadow_mat.diffuseColor = new BABYLON.Color3(1, .5, .5);
-        shadow_mat.alpha = .8;
-        shadow.material = shadow_mat;
-        return shadow;
-    };
-    return CShadow;
-})();
-var InputManager = (function () {
-    function InputManager() {
-    }
-    InputManager.init = function (camera, scene, target) {
-        // input manager
-        window.addEventListener('keyup', function (evt) {
-            switch (evt.keyCode) {
-                case 67:
-                    camera.attachControl(canvas);
-                    break;
-                case 86:
-                    camera.detachControl(canvas);
-                    break;
-                default:
-            }
-        });
-        window.addEventListener('click', function (evt) {
-            var pickResult = scene.pick(scene.pointerX, scene.pointerY);
-            if (pickResult && pickResult.pickedPoint) {
-                var point = pickResult.pickedPoint;
-                createTarget(point);
-            }
-        });
-        // f
-        function createTarget(point) {
-            var newObject = BABYLON.Mesh.CreateTorus('torus', .5, .2, 10, scene);
-            newObject.position = point;
-            var newobj_mat = new BABYLON.StandardMaterial('gold_mat', scene);
-            newobj_mat.diffuseColor = new BABYLON.Color3(1, 1, .1);
-            newobj_mat.emissiveColor = new BABYLON.Color3(.4, .4, .2);
-            newObject.material = newobj_mat;
-            //target_position = point;
-            target.position = point;
-        }
-    };
-    return InputManager;
-})();
-var player;
-//var target_position;
-var target = { position: null };
-function createScene() {
     scene = new BABYLON.Scene(engine);
+    createSceneObjects(scene);
+}
+//var player;
+//var target_position;
+//var target = { position: null };
+function createSceneObjects(scene) {
     var sphere = BABYLON.Mesh.CreateSphere('sphere', 32, 2, scene);
     var sph_mat = new BABYLON.StandardMaterial('sph-mat', scene);
     sph_mat.diffuseColor = new BABYLON.Color3(1, .5, .5);
     sphere.material = sph_mat;
-    player = sphere;
+    var player = sphere;
+    player.update = player_update;
+    player.trail_position = null;
     var shadow_obj = new CShadow('a');
-    var shadow = shadow_obj.createMesh();
+    var shadow = shadow_obj.createMesh(scene);
     var camera = new BABYLON.ArcRotateCamera('camera', 0, 0, 15, new BABYLON.Vector3(0, 0, 0), scene);
     var light = new BABYLON.DirectionalLight('light', new BABYLON.Vector3(-1, -1, -1), scene);
     light.intensity = .7;
@@ -80,7 +31,8 @@ function createScene() {
     ground.position.y = -1;
     ground.material = new BABYLON.StandardMaterial('ground_mat', scene);
     ground.material.wireframe = true;
-    InputManager.init(camera, scene, target);
+    InputManager.init(camera, scene, player);
+    scene.player = player;
     return scene;
 }
 document.addEventListener('DOMContentLoaded', function () {
@@ -89,7 +41,11 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 function gameloop() {
     scene.render();
-    target_position = target.position;
+    scene.player.update(scene.player);
+}
+;
+function player_update(player) {
+    var target_position = player.trail_position;
     if (target_position) {
         var dx = target_position.x - player.position.x;
         var dz = target_position.z - player.position.z;
@@ -103,4 +59,3 @@ function gameloop() {
         player.translate(direction, velocity);
     }
 }
-;
