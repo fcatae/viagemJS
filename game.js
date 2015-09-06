@@ -25,7 +25,7 @@ var CShadow = (function () {
 var InputManager = (function () {
     function InputManager() {
     }
-    InputManager.init = function (camera) {
+    InputManager.init = function (camera, scene, target) {
         // input manager
         window.addEventListener('keyup', function (evt) {
             switch (evt.keyCode) {
@@ -53,13 +53,15 @@ var InputManager = (function () {
             newobj_mat.diffuseColor = new BABYLON.Color3(1, 1, .1);
             newobj_mat.emissiveColor = new BABYLON.Color3(.4, .4, .2);
             newObject.material = newobj_mat;
-            target_position = point;
+            //target_position = point;
+            target.position = point;
         }
     };
     return InputManager;
 })();
 var player;
-var target_position;
+//var target_position;
+var target = { position: null };
 function createScene() {
     scene = new BABYLON.Scene(engine);
     var sphere = BABYLON.Mesh.CreateSphere('sphere', 32, 2, scene);
@@ -78,7 +80,7 @@ function createScene() {
     ground.position.y = -1;
     ground.material = new BABYLON.StandardMaterial('ground_mat', scene);
     ground.material.wireframe = true;
-    InputManager.init(camera);
+    InputManager.init(camera, scene, target);
     return scene;
 }
 document.addEventListener('DOMContentLoaded', function () {
@@ -87,6 +89,7 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 function gameloop() {
     scene.render();
+    target_position = target.position;
     if (target_position) {
         var dx = target_position.x - player.position.x;
         var dz = target_position.z - player.position.z;

@@ -29,7 +29,7 @@ class CShadow {
 
 class InputManager {
 	
-	static init(camera : BABYLON.Camera) {
+	static init(camera : BABYLON.Camera, scene: BABYLON.Scene, target: any) {
 			
 				// input manager
 		window.addEventListener('keyup', function(evt) {
@@ -66,14 +66,16 @@ class InputManager {
 			newobj_mat.emissiveColor = new BABYLON.Color3(.4,.4,.2);
 			newObject.material = newobj_mat;
 			
-			target_position = point;
+			//target_position = point;
+			target.position = point;
 		}
 		
 	}
 }
 
 var player;
-var target_position;
+//var target_position;
+var target = { position: null };
 
 function createScene() {
 	scene = new BABYLON.Scene(engine);
@@ -97,7 +99,7 @@ function createScene() {
 	ground.material = new BABYLON.StandardMaterial('ground_mat', scene);
 	ground.material.wireframe = true;
 	
-	InputManager.init(camera);
+	InputManager.init(camera, scene, target);
 
 	return scene;
 }
@@ -110,6 +112,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function gameloop() {
 	scene.render();
+
+	target_position = target.position;
 
 	if(target_position) {		
 		var dx = target_position.x - player.position.x;
