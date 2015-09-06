@@ -113,7 +113,7 @@ document.addEventListener('DOMContentLoaded', function() {
 function gameloop() {
 	scene.render();
 
-	target_position = target.position;
+	var target_position = target.position;
 
 	if(target_position) {		
 		var dx = target_position.x - player.position.x;
