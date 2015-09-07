@@ -1,20 +1,29 @@
 class Path {
 	
 	head: PathSegment = null;
-	tail: PathSegment = null;
+	tail: PathSegment = null;	
 	
-	constructor() {
-		var currentPath = new PathSegment(0);
+	addHead(segment: PathSegment) {
 		
-		this.head = this.tail = currentPath;			
+		if( this.head ) {
+			var firstSegment = this.head;
+			segment.insertBefore(firstSegment);
+		}
+		else {
+			this.head = this.tail = segment;
+		}
 	}
 	
-	append(segment: PathSegment) {
+	push(segment: PathSegment) {
 		
-		var lastSegment = this.tail;
-		segment.insertAfter(lastSegment);
-
-		this.tail = segment;
+		if( this.tail ) {
+			var lastSegment = this.tail;
+			segment.insertAfter(lastSegment);
+			this.tail = segment;
+		} 
+		else {
+			this.head = this.tail = segment;
+		}		
 	}
 
 }
@@ -27,7 +36,17 @@ class PathSegment {
 	constructor(value: any) {
 		this.value = value;
 	}
-	
+
+	insertBefore(nextPath: PathSegment) {
+		var prevPath = nextPath.prev;
+		 
+		prevPath && (prevPath.next = this);
+		this.next = nextPath;		
+		
+		nextPath.prev = this;
+		this.prev = prevPath;
+	}
+		
 	insertAfter(prevPath: PathSegment) {
 		var nextPath = prevPath.next;
 		 
@@ -46,5 +65,9 @@ class PathSegment {
 		nextPath && (nextPath.prev = prevPath);
 		
 		this.prev = this.next = null;
+	}
+	
+	popNext() {
+		return this.prev;
 	}
 }
