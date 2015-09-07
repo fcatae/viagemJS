@@ -1,4 +1,5 @@
-/// <reference path="babylon.2.1.d.ts" />
+/// <reference path="typings/babylon.2.1.d.ts" />
+
 class InputManager {
 	
 	static init(camera : BABYLON.Camera, scene: BABYLON.Scene) {

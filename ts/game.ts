@@ -1,4 +1,4 @@
-/// <reference path="babylon.2.1.d.ts" />
+/// <reference path="typings/babylon.2.1.d.ts" />
 
 function createSceneObjects(scene) {
 	

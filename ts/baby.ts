@@ -1,5 +1,5 @@
-/* global canvas */
-/// <reference path="babylon.2.1.d.ts" />
+/// <reference path="typings/babylon.2.1.d.ts" />
+
 var canvas; // = <HTMLCanvasElement>document.querySelector('canvas');
 var engine;// = new BABYLON.Engine(canvas, true);
 var scene; // = createScene();
