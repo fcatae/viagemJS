@@ -13,6 +13,7 @@ class MeshPosition {
 	x: number;
 	y: number;
 	h: number;
+	size: number;
 	mesh: BABYLON.Mesh;
 	
 	constructor(mesh) {
@@ -51,7 +52,6 @@ class EatManager {
 					var exactCheck = this.checkDistance(eater, food);
 					
 					if( exactCheck ) {
-						console.log('ae');
 						if( eater !== food ) {
 							eater.oncollision && eater.oncollision(food);
 							food.oncollision && food.oncollision(eater);
