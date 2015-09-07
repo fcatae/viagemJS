@@ -1,13 +1,12 @@
-/* global canvas */
 /// <reference path="babylon.2.1.d.ts" />
 
 function createSceneObjects(scene) {
 	
-	var player = createPlayer();
+	// player
+	var player = new Player(scene);
 	
 	// shadow
-	var shadow_obj = new CShadow('a');
-	var shadow = shadow_obj.createMesh(scene);
+	var shadow = new Shadow(scene);
 
 	// camera, lights		
 	var camera = new BABYLON.ArcRotateCamera('camera', 0, 0, 15, new BABYLON.Vector3(0,0,0), scene);
@@ -15,20 +14,46 @@ function createSceneObjects(scene) {
 	var light2 = new BABYLON.DirectionalLight('light', new BABYLON.Vector3(1,-1, +1), scene); light2.intensity = .3;	
 
 	// ground
-	var ground = BABYLON.Mesh.CreateGround('ground', 20, 20, 20, scene);
-	ground.position.y = -1;
+	var ground = createGround(scene);
 	
-	ground.material = new BABYLON.StandardMaterial('ground_mat', scene);
-	ground.material.wireframe = true;
+	ground['onclick'] = function (point) {
+		createTorus(scene, point);
+		player.trail_position = point;
+		};
 	
 	// input manager start
-	InputManager.init(camera, scene, player);
+	InputManager.init(camera, scene);
 
 	scene.update = function() {
 		player.update();
 	}; 
 	
 	return scene;	
+	
+	// create torus
+	function createTorus(scene, point) {
+		var newObject = BABYLON.Mesh.CreateTorus('torus', .5, .2, 10, scene);
+		newObject.position = point;			
+		
+		var newobj_mat = new BABYLON.StandardMaterial('gold_mat', scene);		
+		newobj_mat.diffuseColor = new BABYLON.Color3(1,1,.1);
+		newobj_mat.emissiveColor = new BABYLON.Color3(.4,.4,.2);
+		newObject.material = newobj_mat;
+		
+		return newObject;
+	}
+	
+	// create ground
+	function createGround(scene) {
+		var ground = BABYLON.Mesh.CreateGround('ground', 20, 20, 20, scene);
+		ground.position.y = -1;
+		
+		ground.material = new BABYLON.StandardMaterial('ground_mat', scene);
+		ground.material.wireframe = true;
+		
+		return ground;
+	}
+		
 }
 
 
