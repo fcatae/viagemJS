@@ -26,7 +26,9 @@ describe('paths', function() {
 			last = last.popNext();
 		}
 		
-		assert.equal( '2,1,0,-1' , patharr.join(',') );		
+		assert.equal( '2,1,0,-1' , patharr.join(',') );	
+		
+		assert.equal( 4, path.size() )	
 	});
 });
 

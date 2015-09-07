@@ -22,10 +22,35 @@ class Path {
 				
 	}
 
-	pop() {
+	popValue() {
+		var value = null;
+		var segment = <PathSegment>this.tail.prev;
 		
+		if( segment != this.head && this.tail.prev) {
+			value =  segment.value;
+			segment.remove();	
+		}	
+		
+		return value;
+	}
+	
+	pop() {
+
 		return this.tail.prev;
 		
+	}
+	
+	size() {
+		
+		var count = 0;
+		var current = this.pop();
+		
+		while(current != null) {
+			current = current.popNext();
+			count++;
+		}
+		
+		return count;
 	}
 }
 
@@ -58,7 +83,7 @@ class PathSegment {
 		this.prev = prevPath;
 	}
 	
-	remote() {
+	remove() {
 		var prevPath = this.prev;
 		var nextPath = this.next;
 		
