@@ -3,7 +3,8 @@
 
 function createSceneObjects(scene) {
 	
-	var player = createPlayer();
+	// player
+	var player = new Player(scene);
 	
 	// shadow
 	var shadow_obj = new CShadow('a');

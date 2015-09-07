@@ -1,7 +1,8 @@
 /* global canvas */
 /// <reference path="babylon.2.1.d.ts" />
 function createSceneObjects(scene) {
-    var player = createPlayer();
+    // player
+    var player = new Player(scene);
     // shadow
     var shadow_obj = new CShadow('a');
     var shadow = shadow_obj.createMesh(scene);
