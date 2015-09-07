@@ -44,6 +44,7 @@ class PlayerPath {
 
 class Player {
 	
+	position: MeshPosition;
 	trail: PlayerPath = new PlayerPath();
 	mesh: any = null;
 	trail_position: any = null;
@@ -55,6 +56,8 @@ class Player {
 		sph_mat.alpha = .8;
 		sphere.material = sph_mat;
 		this.mesh = sphere;
+		
+		this.position = new MeshPosition(sphere);
 	}
 	
 	init() {
