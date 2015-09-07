@@ -31,7 +31,7 @@ function createSceneObjects(scene) {
 		player.update();
 		
 		if( followstep ) {			
-			var finished = player.move_object(followstep, shadow.mesh, .08);
+			var finished = move_shadow_object(followstep, shadow.mesh, .08);
 			
 			if( finished ) {
 				followstep = null;
@@ -41,7 +41,29 @@ function createSceneObjects(scene) {
 		}
 	}; 
 	
-	return scene;	
+	return scene;		
+	
+	function move_shadow_object(target_position, this_mesh, velocity) {
+
+		var finished_movement = false;
+		
+		var mesh_position = this_mesh.position;
+		
+		var dx = target_position.x - mesh_position.x;
+		var dz = target_position.z - mesh_position.z;
+		
+		var direction = new BABYLON.Vector3(dx, 0, dz);
+		
+		if( direction.length() > velocity) {
+			direction = direction.normalize();
+		} else {
+			finished_movement = true;
+		}
+		
+		this_mesh.translate( direction, velocity );
+		
+		return finished_movement;
+	}
 	
 	function createMiniSphere(scene, point) {
 		var newObject = BABYLON.Mesh.CreateSphere('sph-trail', 4, .2, scene);

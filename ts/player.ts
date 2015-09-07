@@ -72,7 +72,7 @@ class Player {
 		}
 	}
 	
-	move_object(target_position, this_mesh, velocity) {
+	private move_object(target_position, this_mesh, velocity) {
 
 		var finished_movement = false;
 		
