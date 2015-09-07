@@ -10,9 +10,15 @@ interface ObjectPosition {
 }
 
 class MeshPosition {
-	x: number;
-	y: number;
-	h: number;
+
+	get x(): number { return this.mesh.position.x; };
+	get y(): number { return this.mesh.position.z; };
+	get h(): number { return this.mesh.position.y; };
+	
+	get mx(): number { return this.mesh.position.x; };
+	get my(): number { return this.mesh.position.y; };
+	get mz(): number { return this.mesh.position.z; };
+	
 	size: number;
 	mesh: BABYLON.Mesh;
 	

@@ -67,22 +67,23 @@ class Player {
 	update() {
 		
 		var target_position = this.trail_position ;
-		var this_mesh = this.mesh;
+		//var this_mesh = this.mesh; // remove
 		
 		if( target_position ) {
-			this.move_object(target_position, this_mesh, .1);		
+			this.move_object(target_position, .1); // remove this_mesh		
 			this.trail.add(target_position);
 		}
 	}
 	
-	private move_object(target_position, this_mesh, velocity) {
+	private move_object(target_position, velocity) {
 
 		var finished_movement = false;
 		
-		var mesh_position = this_mesh.position;
+		//var mesh_position = this_mesh.position;
+		//var mesh_position = this.position;
 		
-		var dx = target_position.x - mesh_position.x;
-		var dz = target_position.z - mesh_position.z;
+		var dx = target_position.x - this.position.mx;
+		var dz = target_position.z - this.position.mz;
 		
 		var direction = new BABYLON.Vector3(dx, 0, dz);
 		
@@ -92,7 +93,10 @@ class Player {
 			finished_movement = true;
 		}
 		
-		this_mesh.translate( direction, velocity );
+		this.position.change(function(mesh) {
+			mesh.translate( direction, velocity );
+		});
+		//this_mesh.translate( direction, velocity );
 		
 		return finished_movement;
 	}
