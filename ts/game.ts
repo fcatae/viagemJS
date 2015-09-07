@@ -2,6 +2,11 @@
 
 function createSceneObjects(scene) {
 	
+	var p = new Path();
+	p.addHead(new PathSegment(1));
+	p.addHead(new PathSegment(2));
+	p.addHead(new PathSegment(3));
+	
 	// player
 	var player = new Player(scene);
 	
