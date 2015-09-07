@@ -52,6 +52,7 @@ class Player {
 		var sphere = BABYLON.Mesh.CreateSphere('sphere', 32, 2, scene);
 		var sph_mat = new BABYLON.StandardMaterial('sph-mat', scene);
 		sph_mat.diffuseColor = new BABYLON.Color3(1, .5, .5);
+		sph_mat.alpha = .8;
 		sphere.material = sph_mat;
 		this.mesh = sphere;
 	}
