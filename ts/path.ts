@@ -3,31 +3,30 @@ class Path {
 	head: PathSegment = null;
 	tail: PathSegment = null;	
 	
+	constructor(value) {
+		this.head = new PathSegment(value);
+		this.tail = new PathSegment(value);
+		
+		this.head.next = this.tail;
+		this.tail.prev = this.head;
+	}
+	
 	addHead(segment: PathSegment) {
 		
-		if( this.head ) {
-			var firstSegment = this.head;
-			segment.insertBefore(firstSegment);
-		}
-		else {
-			this.head = this.tail = segment;
-			segment.prev = segment.next = null;			
-		}
+		segment.insertAfter( this.head );
 	}
 	
 	push(segment: PathSegment) {
-		
-		if( this.tail ) {
-			var lastSegment = this.tail;
-			segment.insertAfter(lastSegment);
-			this.tail = segment;
-		} 
-		else {
-			this.head = this.tail = segment;
-			segment.prev = segment.next = null;
-		}		
+
+		segment.insertBefore( this.tail );
+				
 	}
 
+	pop() {
+		
+		return this.tail.prev;
+		
+	}
 }
 
 class PathSegment {

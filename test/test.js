@@ -11,12 +11,22 @@ describe('array', function() {
 });
 
 describe('paths', function() {
-	it('add', function() {
-		var path = new Path();
-		var seg = new PathSegment(0);
+	it('add [2,1,0] in order', function() {
+		var path = new Path(-1);
+		var seg = new PathSegment(2);
 		path.addHead(seg);
 		path.addHead(new PathSegment(1));
-		path.addHead(new PathSegment(2));		
+		path.addHead(new PathSegment(0));
+		
+		var patharr = [];
+		
+		var last = path.pop();
+		while( last != null ) {
+			patharr.push(last.value);
+			last = last.popNext();
+		}
+		
+		assert.equal( '2,1,0,-1' , patharr.join(',') );		
 	});
 });
 
