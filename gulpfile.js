@@ -18,3 +18,7 @@ gulp.task('html', function() {
 });
 
 gulp.task('default', ['tsc', 'lib', 'html']);
+
+gulp.task('watch', ['tsc'], function() {
+	gulp.watch('ts/*.ts', ['tsc']);
+});
