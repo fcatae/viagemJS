@@ -24,17 +24,20 @@ function createSceneObjects(scene) {
 	// input manager start
 	InputManager.init(camera, scene);
 
+	var followstep = null;
+	player.init();
 	
 	scene.update = function() {
 		player.update();
 		
-		var followstep = player.trail.followstep();
-		if( followstep ) {
+		if( followstep ) {			
+			var finished = player.move_object(followstep, shadow.mesh, .08);
 			
-			player.move_object(followstep, shadow.mesh, .08);
-			
-			//shadow.mesh.position = followstep;
-			console.log('follow step');
+			if( finished ) {
+				followstep = null;
+			}
+		} else {
+			followstep = player.trail.followstep();
 		}
 	}; 
 	

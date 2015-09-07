@@ -8,6 +8,11 @@ class PlayerPath {
 	isSync: boolean = true;
 	delta_distance: number = 1;
 	
+	init(position) {
+		this.isSync = true;
+		this.last_position = position;	
+	}
+	
 	add(position) {
 		
 		if( this.isSync && this.last_position ) {
@@ -49,6 +54,10 @@ class Player {
 		sph_mat.diffuseColor = new BABYLON.Color3(1, .5, .5);
 		sphere.material = sph_mat;
 		this.mesh = sphere;
+	}
+	
+	init() {
+		this.trail.init(this.mesh.position);
 	}
 	
 	update() {
