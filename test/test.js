@@ -1,3 +1,5 @@
+/// <reference path="../ts/path.ts" />
+
 var assert = chai.assert;
 
 describe('array', function() {
@@ -7,10 +9,14 @@ describe('array', function() {
 		})		
 	})
 });
-// 
-// describe('paths', function() {
-// 	it('add', function() {
-// 		var path = new Path();
-// 	});
-// });
+
+describe('paths', function() {
+	it('add', function() {
+		var path = new Path();
+		var seg = new PathSegment(0);
+		path.addHead(seg);
+		path.addHead(new PathSegment(1));
+		path.addHead(new PathSegment(2));		
+	});
+});
 

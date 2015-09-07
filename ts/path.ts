@@ -11,6 +11,7 @@ class Path {
 		}
 		else {
 			this.head = this.tail = segment;
+			segment.prev = segment.next = null;			
 		}
 	}
 	
@@ -23,6 +24,7 @@ class Path {
 		} 
 		else {
 			this.head = this.tail = segment;
+			segment.prev = segment.next = null;
 		}		
 	}
 
