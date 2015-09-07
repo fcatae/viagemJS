@@ -1,6 +1,9 @@
 /// <reference path="typings/babylon.2.1.d.ts" />
+/// <reference path="global.ts" />
 
 function createSceneObjects(scene) {
+	
+	collisionMgr = new EatManager();
 	
 	// player
 	var player = new Player(scene);
@@ -19,6 +22,7 @@ function createSceneObjects(scene) {
 	ground['onclick'] = function (point) {
 		createTorus(scene, point);
 		player.trail_position = point;
+		player.target_position = { x: point.x, y: point.z};
 		};
 	
 	// input manager start
@@ -27,7 +31,14 @@ function createSceneObjects(scene) {
 	var followstep = null;
 	player.init();
 	
+	// eat test
+	collisionMgr.registerEater(player.position);
+	var minisph = createMiniSphere(scene, new BABYLON.Vector3(3,0,3));
+	collisionMgr.register({x: 3, y: 3, size: .2, name:'minisph', oncollision: function() { minisph.position = new BABYLON.Vector3(3,3,3)}
+	});
+	
 	scene.update = function() {
+				
 		player.update();
 		
 		if( followstep ) {			
@@ -39,6 +50,8 @@ function createSceneObjects(scene) {
 		} else {
 			followstep = player.trail.followstep();
 		}
+
+		collisionMgr.check();
 	}; 
 	
 	return scene;		

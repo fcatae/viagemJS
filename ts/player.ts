@@ -48,6 +48,7 @@ class Player {
 	trail: PlayerPath = new PlayerPath();
 	mesh: any = null;
 	trail_position: any = null;
+	target_position: any = null;
 	
 	constructor(scene) {
 		var sphere = BABYLON.Mesh.CreateSphere('sphere', 32, 2, scene);
@@ -67,23 +68,19 @@ class Player {
 	update() {
 		
 		var target_position = this.trail_position ;
-		//var this_mesh = this.mesh; // remove
 		
 		if( target_position ) {
-			this.move_object(target_position, .1); // remove this_mesh		
+			this.move_object(.1); // remove this_mesh		
 			this.trail.add(target_position);
 		}
 	}
 	
-	private move_object(target_position, velocity) {
+	private move_object(velocity) {
 
 		var finished_movement = false;
 		
-		//var mesh_position = this_mesh.position;
-		//var mesh_position = this.position;
-		
-		var dx = target_position.x - this.position.mx;
-		var dz = target_position.z - this.position.mz;
+		var dx = this.target_position.x - this.position.x;
+		var dz = this.target_position.y - this.position.y;
 		
 		var direction = new BABYLON.Vector3(dx, 0, dz);
 		

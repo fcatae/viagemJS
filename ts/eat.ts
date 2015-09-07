@@ -22,8 +22,9 @@ class MeshPosition {
 	size: number;
 	mesh: BABYLON.Mesh;
 	
-	constructor(mesh) {
+	constructor(mesh,size) {
 		this.mesh = mesh;
+		this.size = size;
 	}
 	
 	change(action : (mesh) => void) {
@@ -39,11 +40,13 @@ class EatManager {
 	eaterList: Array<ObjectPosition> = [];
 	
 	registerEater(eater) {
+		eater.size = eater.size || 0;
 		this.eaterList.push(eater);		
 		this.register(eater);
 	}
 	
 	register(food) {
+		food.size = food.size || 0;
 		this.foodList.push(food);
 	}
 	
