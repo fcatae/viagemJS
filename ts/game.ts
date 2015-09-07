@@ -2,11 +2,6 @@
 
 function createSceneObjects(scene) {
 	
-	var p = new Path();
-	p.addHead(new PathSegment(1));
-	p.addHead(new PathSegment(2));
-	p.addHead(new PathSegment(3));
-	
 	// player
 	var player = new Player(scene);
 	
@@ -29,11 +24,36 @@ function createSceneObjects(scene) {
 	// input manager start
 	InputManager.init(camera, scene);
 
+	var followstep = null;
+	player.init();
+	
 	scene.update = function() {
 		player.update();
+		
+		if( followstep ) {			
+			var finished = player.move_object(followstep, shadow.mesh, .08);
+			
+			if( finished ) {
+				followstep = null;
+			}
+		} else {
+			followstep = player.trail.followstep();
+		}
 	}; 
 	
 	return scene;	
+	
+	function createMiniSphere(scene, point) {
+		var newObject = BABYLON.Mesh.CreateSphere('sph-trail', 4, .2, scene);
+		newObject.position = point;			
+		
+		var newobj_mat = new BABYLON.StandardMaterial('gold_mat', scene);		
+		newobj_mat.diffuseColor = new BABYLON.Color3(1,1,.1);
+		newobj_mat.emissiveColor = new BABYLON.Color3(.4,.4,.2);
+		newObject.material = newobj_mat;
+		
+		return newObject;
+	}
 	
 	// create torus
 	function createTorus(scene, point) {
