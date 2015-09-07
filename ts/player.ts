@@ -82,7 +82,7 @@ class Player {
 		
 		var direction = new BABYLON.Vector3(dx, 0, dz);
 		
-		if( direction.lengthSquared() > velocity) {
+		if( direction.length() > velocity) {
 			direction = direction.normalize();
 		} else {
 			finished_movement = true;
