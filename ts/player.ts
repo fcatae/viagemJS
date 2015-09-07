@@ -1,3 +1,5 @@
+/// <reference path="typings/babylon.2.1.d.ts" />
+
 class Player {
 	
 	mesh: any = null;
