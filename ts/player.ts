@@ -42,8 +42,13 @@ class PlayerPath {
 	}
 }
 
+interface xy {
+	x: number;
+	y: number;
+}
+
 class Player {
-	
+
 	position: MeshPosition;
 	trail: PlayerPath = new PlayerPath();
 	mesh: any = null;
@@ -58,7 +63,7 @@ class Player {
 		sphere.material = sph_mat;
 		this.mesh = sphere;
 		
-		this.position = new MeshPosition(sphere);
+		this.position = new MeshPosition(sphere,2);
 	}
 	
 	init() {
@@ -82,20 +87,53 @@ class Player {
 		var dx = this.target_position.x - this.position.x;
 		var dz = this.target_position.y - this.position.y;
 		
-		var direction = new BABYLON.Vector3(dx, 0, dz);
+		// proposed code
+		// var path = target - position;
+		// if( path.distance > velocity )
+		//     path = mult(velocity , norm(target - position));
+		// position.translate(path)
 		
-		if( direction.length() > velocity) {
-			direction = direction.normalize();
-		} else {
-			finished_movement = true;
+		var path = subtract(this.target_position, this.position);
+		if( distanceSquared(path) > square(velocity) ) {
+			path = mult(velocity, norm(path));
 		}
+		this.position.translate(path);
 		
-		this.position.change(function(mesh) {
-			mesh.translate( direction, velocity );
-		});
-		//this_mesh.translate( direction, velocity );
+		// // old code:
+		// var direction = new BABYLON.Vector3(dx, 0, dz);
+		// 
+		// if( direction.length() > velocity) {
+		// 	direction = direction.normalize();
+		// } else {
+		// 	finished_movement = true;
+		// }
+		// 
+		// this.position.change(function(mesh) {
+		// 	//mesh.translate( direction, velocity );
+		// });
+		
+		// end of old code
 		
 		return finished_movement;
+		
+		function subtract(a:xy, b:xy) {
+			return [a.x-b.x, a.y-b.y];
+		}
+		function distanceSquared(vect) {
+			return vect[0]*vect[0]+vect[1]*vect[1];
+		}
+		function square(n) {
+			return n*n;
+		}
+		function norm(vect) {
+			var distance = Math.sqrt( distanceSquared(vect) );
+			return [ vect[0]/distance, vect[1]/distance ];			
+		}
+		function mult(val, vect) {
+			return [ vect[0]*val, vect[1]*val ];
+		}
 	}
+	
+
 		
 }

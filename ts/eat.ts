@@ -32,6 +32,14 @@ class MeshPosition {
 		action && action(this.mesh);
 		
 	}
+	
+	translate(vect : Array<number>) {
+		var dx = vect[0];
+		var dy = vect[1];
+		
+		this.mesh.position.x += dx;
+		this.mesh.position.z += dy;		
+	}
 }
 
 class EatManager {
