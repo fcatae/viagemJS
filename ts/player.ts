@@ -85,34 +85,13 @@ class Player {
 		var finished_movement = false;
 		
 		var dx = this.target_position.x - this.position.x;
-		var dz = this.target_position.y - this.position.y;
-		
-		// proposed code
-		// var path = target - position;
-		// if( path.distance > velocity )
-		//     path = mult(velocity , norm(target - position));
-		// position.translate(path)
+		var dz = this.target_position.y - this.position.y;		
 		
 		var path = subtract(this.target_position, this.position);
 		if( distanceSquared(path) > square(velocity) ) {
 			path = mult(velocity, norm(path));
 		}
-		this.position.translate(path);
-		
-		// // old code:
-		// var direction = new BABYLON.Vector3(dx, 0, dz);
-		// 
-		// if( direction.length() > velocity) {
-		// 	direction = direction.normalize();
-		// } else {
-		// 	finished_movement = true;
-		// }
-		// 
-		// this.position.change(function(mesh) {
-		// 	//mesh.translate( direction, velocity );
-		// });
-		
-		// end of old code
+		this.position.translate(path);		
 		
 		return finished_movement;
 		
