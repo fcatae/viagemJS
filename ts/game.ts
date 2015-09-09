@@ -20,10 +20,13 @@ function createSceneObjects(scene) {
 	var ground = createGround(scene);
 	
 	ground['onclick'] = function (point) {
-		createTorus(scene, point);
+		var torus = createTorus(scene, point);
 		player.trail_position = point;
 		player.target_position = { x: point.x, y: point.z};
-		};
+		collisionMgr.register({x: point.x, y: point.z, size: .1, name:'torus'
+			,oncollision: function() { torus.material.diffuseColor = new BABYLON.Color3(.1,.1,.5); }
+		});
+	};
 	
 	// input manager start
 	InputManager.init(camera, scene);
@@ -32,6 +35,7 @@ function createSceneObjects(scene) {
 	player.init();
 	
 	// eat test
+	player.position.name = 'sphere';
 	collisionMgr.registerEater(player.position);
 	var minisph = createMiniSphere(scene, new BABYLON.Vector3(3,0,3));
 	collisionMgr.register({x: 3, y: 3, size: .2, name:'minisph', oncollision: function() { minisph.position = new BABYLON.Vector3(3,3,3)}

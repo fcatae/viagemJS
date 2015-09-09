@@ -43,6 +43,8 @@ class MeshPosition {
 }
 
 class EatManager {
+
+	logBuffer: Array<string> = [];
 	
 	foodList: Array<ObjectPosition> = [];
 	eaterList: Array<ObjectPosition> = [];
@@ -64,6 +66,7 @@ class EatManager {
 			this.foodList.forEach(food => {
 				
 				var fastCheck = this.checkAABB(eater, food);
+				this.logBuffer.push('check: fastCheck ' + eater.name + ', ' + food.name);
 				
 				if( fastCheck ) {					
 					var exactCheck = this.checkDistance(eater, food);

@@ -4,25 +4,32 @@ class PlayerPath {
 	last_position: BABYLON.Vector3;
 	isSync: boolean = true;
 	delta_distance: number = 1;
-	
+	logBuffer: Array<string> = [];
 	init(position) {
 		this.isSync = true;
 		this.last_position = position;	
+	}
+	
+	update(position) {		
+			this.logBuffer.push('PlayerPath: update-position: ' + position);
 	}
 	
 	add(position) {
 		
 		if( this.isSync && this.last_position ) {
 			
-			var distance = BABYLON.Vector3.Distance(position, this.last_position);
-			this.total_distance += distance;
+			this.addSegment(position);
 			
-			if( this.total_distance > this.delta_distance ) {		
-				this.addSegment(position);
-				this.total_distance -= this.delta_distance;
-				console.log('PlayerPath: add-segment-position');
-			}
+			// var distance = BABYLON.Vector3.Distance(position, this.last_position);
+			// this.total_distance += distance;
+			// 
+			// if( this.total_distance > this.delta_distance ) {		
+			// 	this.addSegment(position);
+			// 	this.total_distance -= this.delta_distance;
+			// 	console.log('PlayerPath: add-segment-position');
+			// }
 
+			this.logBuffer.push('PlayerPath: add-segment-position: ' + position);
 		}
 		
 		this.last_position = position;
@@ -34,6 +41,8 @@ class PlayerPath {
 	
 	followstep() {
 		var stepSegment = this.path.popValue();
+		
+		this.logBuffer.push('PlayerPath: follow-step: ' + stepSegment);
 		
 		return stepSegment;
 	}
